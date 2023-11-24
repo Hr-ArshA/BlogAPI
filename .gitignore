@@ -4,7 +4,7 @@
 venv
 media
 static
-staticfiles
+_staticfiles
 
 
 ### Python ###
