@@ -14,8 +14,14 @@ class Category(models.Model):
     '''
     A class for categorizing blog posts
     '''
-    parent = models.ForeignKey('self', default=None, null=True, blank=True, on_delete=models.SET_NULL,
-                               related_name='childeren')
+    parent = models.ForeignKey(
+        'self', 
+        default=None, 
+        null=True, 
+        blank=True, 
+        on_delete=models.SET_NULL,
+        related_name='childeren'             
+    )
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=100, unique=True)
     status = models.BooleanField(default=True)

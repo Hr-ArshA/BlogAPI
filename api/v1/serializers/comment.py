@@ -10,8 +10,8 @@ class CommentSerializer(serializers.ModelSerializer):
             "parent",
             "author",
             "body",
-            "created_at",
-            "updated_at",
+            "created",
+            "updated",
         ]
 
 

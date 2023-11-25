@@ -16,6 +16,8 @@ from api.v1.serializers.comment import (
     CommentSerializer
 )
 
+from accounts.models import Profile
+
 
 class CreateCommentAPIView(APIView):
     """
@@ -32,8 +34,10 @@ class CreateCommentAPIView(APIView):
     def post(self, request, slug, *args, **kwargs):
         post = get_object_or_404(Post, slug=slug)
         serializer = CommentCreateUpdateSerializer(data=request.data)
+        user = Profile.objects.get(user__id=request.user.id)
+        print(user)
         if serializer.is_valid(raise_exception=True):
-            serializer.save(author=request.user, parent=post)
+            serializer.save(author=user, parent=post)
             return Response(serializer.data, status=200)
         else:
             return Response({"errors": serializer.errors}, status=400)

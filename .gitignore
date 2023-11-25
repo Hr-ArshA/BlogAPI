@@ -5,6 +5,7 @@ venv
 media
 static
 _staticfiles
+.postgres_data/
 
 
 ### Python ###

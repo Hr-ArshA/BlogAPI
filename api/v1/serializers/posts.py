@@ -1,17 +1,23 @@
 import os
 from rest_framework import serializers
-from blog.models import Post, Comment
+from blog.models import Post, Comment, Category
 from config import settings
 from .comment import CommentSerializer
+from accounts.models import Profile
 
 class PostCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = [
             "title",
+            "slug",
             "description",
-            "body",
-            "image"
+            "content",
+            "cover",
+            "author",
+            "category",
+            "is_special",
+            "status"
         ]
 
     def validate_title(self, value):
@@ -45,6 +51,7 @@ class PostListSerializer(serializers.ModelSerializer):
             "title",
             "author",
             "cover",
+            "category",
             "description",
             "comments",
         ]
@@ -61,13 +68,14 @@ class PostDetailSerializer(serializers.ModelSerializer):
     slug = serializers.SerializerMethodField(read_only=True)
     author = serializers.PrimaryKeyRelatedField(read_only=True)
     comments = serializers.SerializerMethodField(read_only=True)
-
+    
     class Meta:
         model = Post
         fields = [
             "id",
             "slug",
             "title",
+            'category',
             "description",
             "content",
             "author",
@@ -76,6 +84,8 @@ class PostDetailSerializer(serializers.ModelSerializer):
             "updated",
             "comments",
         ]
+    
+    
 
     def get_slug(self, obj):
         return obj.slug

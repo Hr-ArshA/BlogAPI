@@ -1,4 +1,5 @@
 from rest_framework.permissions import BasePermission, SAFE_METHODS
+from accounts.models import Profile
 
 
 class IsOwner(BasePermission):
@@ -33,5 +34,8 @@ class IsAuthorOrReadOnly(BasePermission):
         '''
         Write permissions are only allowed to the author of a post
         '''
-        return obj.author == request.user
+        user = Profile.objects.filter(user__id=request.user.id)[0]
+        author = Profile.objects.filter(id=obj.author.id)[0]
+
+        return author == user
 
