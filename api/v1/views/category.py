@@ -12,7 +12,7 @@ from api.v1.pagination import PostLimitOffsetPagination
 from blog.models import Post
 
 from api.v1.serializers.posts import PostListSerializer
-from api.v1.serializers.category import CategoryCreateUpdateSerializer
+from api.v1.serializers.category import CategoryCreateUpdateSerializer, CategoryDetailSerializer
 from blog.models import Category, Post
 
 
@@ -58,3 +58,23 @@ class ListCategoryAPIView(APIView):
         return Response(serializer.data, status=200)
     
 
+class DetailCategoryAPIView(RetrieveUpdateDestroyAPIView):
+    """
+    get:
+        Returns the details of a post instance. Searches post using slug field.
+
+    put:
+        Updates an existing post. Returns updated post data
+
+        parameters: [slug, title, content, description, cover]
+
+    delete:
+        Delete an existing post
+
+        parameters = [slug]
+    """
+
+    queryset = Category.objects.all()
+    lookup_field = "slug"
+    serializer_class = CategoryDetailSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]

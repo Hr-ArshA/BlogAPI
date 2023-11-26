@@ -5,3 +5,9 @@ class CategoryCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['parent' ,'title' ,'slug' ,'status' ,'position']
+
+
+class CategoryDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['parent' ,'title' ,'slug' ,'status' ,'position']
