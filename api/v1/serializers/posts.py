@@ -14,7 +14,6 @@ class PostCreateUpdateSerializer(serializers.ModelSerializer):
             "description",
             "content",
             "cover",
-            "author",
             "category",
             "is_special",
             "status"
@@ -84,8 +83,7 @@ class PostDetailSerializer(serializers.ModelSerializer):
             "updated",
             "comments",
         ]
-    
-    
+
 
     def get_slug(self, obj):
         return obj.slug

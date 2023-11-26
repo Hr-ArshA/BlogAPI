@@ -14,7 +14,6 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ["id", "email", "password"]
 
     def create(self, validated_data):
-        # username = validated_data["username"]
         email = validated_data["email"]
         password = validated_data["password"]
         user_obj = User(email=email)

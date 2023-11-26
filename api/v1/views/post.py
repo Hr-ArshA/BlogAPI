@@ -16,8 +16,9 @@ from api.v1.serializers.posts import (
     PostCreateUpdateSerializer,
     PostListSerializer,
     PostDetailSerializer,
-
 )
+
+from accounts.models import Profile
 
 # Create your views here.
 class CreatePostAPIView(APIView):
@@ -25,7 +26,7 @@ class CreatePostAPIView(APIView):
     post:
         Creates a new post instance. Returns created post data
 
-        parameters: [title, body, description, image]
+        parameters: [title, slug, description, content, cover, category, is_special, status]
     """
 
     queryset = Post.objects.all()
@@ -35,12 +36,10 @@ class CreatePostAPIView(APIView):
     ]
 
     def post(self, request, *args, **kwargs):
-        print(request.__dir__())
-        print(kwargs)
-        print(request.data)
         serializer = PostCreateUpdateSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.save()
+            user = Profile.objects.get(user__id=request.user.id)
+            serializer.save(author=user)
             return Response(serializer.data, status=200)
         else:
             return Response({"errors": serializer.errors}, status=400)
@@ -66,7 +65,7 @@ class DetailPostAPIView(RetrieveUpdateDestroyAPIView):
     put:
         Updates an existing post. Returns updated post data
 
-        parameters: [slug, title, body, description, image]
+        parameters: [slug, title, content, description, cover]
 
     delete:
         Delete an existing post

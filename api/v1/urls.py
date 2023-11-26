@@ -3,6 +3,7 @@ from api.v1.docs import doc_urlpatterns
 from .views.post import ListPostAPIView, CreatePostAPIView, DetailPostAPIView
 from .views.account import UserCreateAPIView, UserListAPIView, UserDetailAPIView
 from .views.comment import ListCommentAPIView, DetailCommentAPIView, CreateCommentAPIView
+from .views.category import ListCategoryAPIView, CreateCategoryAPIView
 
 app_name = 'api'
 
@@ -23,6 +24,9 @@ urlpatterns = [
       DetailCommentAPIView.as_view(),
       name="comment_detail",
    ),
+
+   path('category/<str:slug>', ListCategoryAPIView.as_view(), name="category_list"),
+   path('category/create/', CreateCategoryAPIView.as_view(), name="create_category"),
 
    path("user/", UserListAPIView.as_view(), name="user_detail"),
    path("user/register/", UserCreateAPIView.as_view(), name="user_create"),
