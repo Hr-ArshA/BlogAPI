@@ -88,17 +88,8 @@ class DetailPostAPIView(RetrieveUpdateDestroyAPIView):
         queryset = Post.objects.get(slug=kwargs['slug'])
 
         address = get_client_ip(request)
-        # print(address, type(address))
-
         new_seen = json.dumps({'slug': kwargs['slug'], 'ip': address})
         this_redis.lpush('new_seen', new_seen)
-
-        c = this_redis.lrange('new_seen', 0, -1)
-        this_redis.rpop('new_seen')
-        print(c)
-        # ip = IPAddress.objects.create(ip_address=address)
-        # PostViews.objects.create(article=queryset, ip_address=ip).save()
-        # ip.save()
         
         serializer = PostDetailSerializer(queryset)
         return Response(serializer.data, status=200)

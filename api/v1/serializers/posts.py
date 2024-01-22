@@ -82,6 +82,7 @@ class PostDetailSerializer(serializers.ModelSerializer):
             "created",
             "updated",
             "comments",
+            'views',
         ]
 
 

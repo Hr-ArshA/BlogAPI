@@ -48,7 +48,7 @@ class Post(models.Model):
     
     title = models.CharField(_('title'), max_length=256)
     slug = models.SlugField(_('slug'), unique=True)
-    category = models.ManyToManyField(Category, related_name='posts', blank=True, null=True)
+    category = models.ManyToManyField(Category, related_name='posts', blank=True)
     author = models.ForeignKey(Profile, related_name='posts', on_delete=models.SET_NULL, null=True, blank=True)
     content = models.TextField(_('content'))
     description = models.CharField(_('description'), max_length=256)
