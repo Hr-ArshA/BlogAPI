@@ -5,6 +5,9 @@ from django.utils.translation import gettext_lazy as _
 from extentions.name_fixer import upload_img_path
 from accounts.models import Profile, IPAddress
 from django.shortcuts import reverse
+from django.db.models.signals import post_save, pre_save
+from django.dispatch import receiver
+from PIL import Image
 
 
 # Create your models here.
@@ -102,3 +105,12 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ["-created", "-updated"]
+
+
+@receiver(post_save, sender=Post)
+def deleteـmetadata(sender, instance, **kwargs):
+    image = Image.open(instance.cover)
+    data = list(image.getdata())
+    new_image = Image.new(image.mode, image.size)
+    new_image.putdata(data)
+    new_image.save(instance.cover.path)
