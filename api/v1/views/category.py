@@ -31,9 +31,6 @@ class CreateCategoryAPIView(APIView):
     ]
 
     def post(self, request, *args, **kwargs):
-        print(request.__dir__())
-        print(kwargs)
-        print(request.data)
         serializer = CategoryCreateUpdateSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()

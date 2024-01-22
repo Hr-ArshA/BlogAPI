@@ -9,8 +9,10 @@ from rest_framework.generics import (
     RetrieveUpdateDestroyAPIView,
 )
 
+from extentions.ip_utils import get_client_ip
 from api.v1.pagination import PostLimitOffsetPagination
-from blog.models import Post
+from blog.models import Post, PostViews
+from accounts.models import IPAddress
 from api.v1.permissions import IsAuthorOrReadOnly
 from api.v1.serializers.posts import (
     PostCreateUpdateSerializer,
@@ -19,6 +21,8 @@ from api.v1.serializers.posts import (
 )
 
 from accounts.models import Profile
+from redis import Redis
+import json
 
 # Create your views here.
 class CreatePostAPIView(APIView):
@@ -73,8 +77,29 @@ class DetailPostAPIView(RetrieveUpdateDestroyAPIView):
         parameters = [slug]
     """
 
-    queryset = Post.objects.all()
+    # queryset = Post.objects.all()
     lookup_field = "slug"
     serializer_class = PostDetailSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
+    # permission_classes = [IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
+
+    def get(self, request, *args, **kwargs):
+        this_redis = Redis(host='redis', port=6379, password='testpass123', decode_responses=True)
+
+        queryset = Post.objects.get(slug=kwargs['slug'])
+
+        address = get_client_ip(request)
+        # print(address, type(address))
+
+        new_seen = json.dumps({'slug': kwargs['slug'], 'ip': address})
+        this_redis.lpush('new_seen', new_seen)
+
+        c = this_redis.lrange('new_seen', 0, -1)
+        this_redis.rpop('new_seen')
+        print(c)
+        # ip = IPAddress.objects.create(ip_address=address)
+        # PostViews.objects.create(article=queryset, ip_address=ip).save()
+        # ip.save()
+        
+        serializer = PostDetailSerializer(queryset)
+        return Response(serializer.data, status=200)
 
