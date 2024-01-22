@@ -18,16 +18,18 @@ def upload_img_path(instance, filename):
 
     '''
     makeing name of files with sha256
+    
+    random_num = random.randint(0,99999999999999999)
+    hash_this = str(str(file_time) + str(random_num)).encode('utf-8')
+    hash_it = sha256(hash_this).hexdigest()
+    final_name = f"{hash_it}{ext}"
     '''
-    # random_num = random.randint(0,99999999999999999)
-    # hash_this = str(str(file_time) + str(random_num)).encode('utf-8')
-    # hash_it = sha256(hash_this).hexdigest()
-    # final_name = f"{hash_it}{ext}"
 
     '''
     makeing name of files with uuid
     '''
     name = str(uuid4())
     final_name = f"{name}{ext}"
+
 
     return f"image/{class_name}/{final_name}"

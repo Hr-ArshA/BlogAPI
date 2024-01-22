@@ -1,4 +1,3 @@
-
 import uuid
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
@@ -7,6 +6,8 @@ from django.utils.translation import gettext_lazy as _
 from extentions.name_fixer import upload_img_path
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
+from PIL import Image
+from exif import Image as EI
 
 from .managers import CustomUserManager
 
@@ -42,6 +43,20 @@ class Profile(models.Model):
 
     class Meta:
         verbose_name = 'Profile'
+
+
+@receiver(post_save, sender=Profile)
+def deleteـmetadata(sender, instance, **kwargs):
+    # print(sender, instance, kwargs)
+    
+    image = Image.open(instance.photo)
+    data = list(image.getdata())
+    new_image = Image.new(image.mode, image.size)
+    new_image.putdata(data)
+    new_image.save(instance.photo.path)
+
+    print(EI(open(instance.photo.path, 'rb').read()).get_all())
+
 
 
 @receiver(post_save, sender=CustomUser)
