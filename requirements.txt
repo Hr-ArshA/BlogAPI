@@ -18,3 +18,5 @@ redis==5.0.1
 sqlparse==0.4.4
 uritemplate==4.1.1
 exif
+python-decouple
+gunicorn

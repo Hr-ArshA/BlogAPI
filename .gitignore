@@ -2,6 +2,7 @@
 
 # my ignore
 venv
+.env
 media
 static
 _staticfiles
