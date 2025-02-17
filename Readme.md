@@ -1,9 +1,5 @@
 # Blog API
 
-This is a simple django blog developed with django rest framework
-
-# Blog API
-
 ## Overview
 
 This is a simple Blog API built using Django and Django REST Framework (DRF). The API provides endpoints for managing blog posts, categories, comments, and user authentication.
