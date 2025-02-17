@@ -38,7 +38,7 @@ This is a simple Blog API built using Django and Django REST Framework (DRF). Th
 #### 1. Clone the Repository
 
 ```sh
-git clone https://github.com/your-username/blog-api.git
+git clone https://github.com/Hr-ArshA/BlogAPI.git
 cd blog-api
 ```
 
